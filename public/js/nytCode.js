@@ -1,5 +1,3 @@
-import moment = require("moment");
-
 function buildQueryURL() {
 
   var queryAPI = "ac6789edc5834e9c95d6ee57b3ac79dd";
@@ -75,15 +73,18 @@ function updatePage(newsAPI) {
     // Log published date, and append to document if exists
     var publishedDate = article.publishedAt;
     console.log(article.publishedAt);
-    moment(publishedDate).calendar();
-    console.log(publishedDate);
+
+    publishedDate = moment(publishedDate).calendar();
+    console.log("NEW MOMENT DATE/TIME: " + publishedDate);
+
+    // console.log(moment("2019-03-11T21:08:43Z").calendar());
 
     if (publishedDate) {
-      $articleListItem.append("<h5>" + article.publishedAt + "</h5>");
+      $articleListItem.append("<h5>" + publishedDate + "</h5>");
     }
 
     // Append and log url
-    $articleListItem.append("<a href='" + article.url + ">URL Here!</a>");
+    $articleListItem.append("<a href='" + article.url + "'>URL Here!</a>");
     console.log(article.url);
 
     // Append the article

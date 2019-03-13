@@ -1,0 +1,2 @@
+Error checking for:    
+    Author, Title, URL, PublishedAt
