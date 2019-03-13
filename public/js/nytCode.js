@@ -1,3 +1,4 @@
+import moment = require("moment");
 
 function buildQueryURL() {
 
@@ -14,19 +15,20 @@ function buildQueryURL() {
 }
 
 
-function updatePage(NYTData) {
+function updatePage(newsAPI) {
   // Get from the form the number of results to display
   // API doesn't have a "limit" parameter, so we have to do this ourselves
   // var numArticles = $("#article-count").val(); 
 
-  // Log the NYTData to console, where it will show up as an object
-  console.log(NYTData);
+  // Log the newsAPI to console, where it will show up as an object
+  console.log(newsAPI);
   console.log("------------------------------------");
 
   // Loop through and build elements for the defined number of articles
   for (var i = 0; i < 5; i++) {
     // Get specific article info for current index
-    var article = NYTData.response.docs[i];
+    var article = newsAPI.articles[i];
+    console.log(article);
 
     // Increase the articleCount (track article # - starting at 1)
     var articleCount = i + 1;
@@ -39,46 +41,50 @@ function updatePage(NYTData) {
     $("#article-section").append($articleList);
 
     // If the article has a headline, log and append to $articleList
-    var headline = article.headline;
+    var headline = article.title;
+    console.log("HEADLINE ========= : " + headline);
     var $articleListItem = $("<li class='list-group-item articleHeadline'>");
 
-    if (headline && headline.main) {
-      console.log(headline.main);
+    if (headline) {
+      console.log(headline);
       $articleListItem.append(
         "<span class='label label-primary'>" +
         articleCount +
         "</span>" +
         "<strong> " +
-        headline.main +
+        headline +
         "</strong>"
       );
     }
 
     // If the article has a byline, log and append to $articleList
-    var byline = article.byline;
+    // var byline = article.byline;
 
-    if (byline && byline.original) {
-      console.log(byline.original);
-      $articleListItem.append("<h5>" + byline.original + "</h5>");
-    }
+    // if (byline && byline.original) {
+    //   console.log(byline.original);
+    //   $articleListItem.append("<h5>" + byline.original + "</h5>");
+    // }
 
     // Log section, and append to document if exists
-    var section = article.section_name;
-    console.log(article.section_name);
-    if (section) {
-      $articleListItem.append("<h5>Section: " + section + "</h5>");
+    var description = article.description;
+    console.log(article.description);
+    if (description) {
+      $articleListItem.append("<h5>Description: " + description + "</h5>");
     }
 
     // Log published date, and append to document if exists
-    var pubDate = article.pub_date;
-    console.log(article.pub_date);
-    if (pubDate) {
-      $articleListItem.append("<h5>" + article.pub_date + "</h5>");
+    var publishedDate = article.publishedAt;
+    console.log(article.publishedAt);
+    moment(publishedDate).calendar();
+    console.log(publishedDate);
+
+    if (publishedDate) {
+      $articleListItem.append("<h5>" + article.publishedAt + "</h5>");
     }
 
     // Append and log url
-    $articleListItem.append("<a href='" + article.web_url + "'>" + article.web_url + "</a>");
-    console.log(article.web_url);
+    $articleListItem.append("<a href='" + article.url + ">URL Here!</a>");
+    console.log(article.url);
 
     // Append the article
     $articleList.append($articleListItem);
